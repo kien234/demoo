@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>H2Kinformation technology</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+<body>
+
+    <div class="content-container">
+        <h2>Thông tin tài khoản</h2>
+        <div id="phone-container">
+            <strong>Số điện thoại:</strong>
+            <span id="phone"></span>
+        </div>
+        <div id="name-container">
+            <strong>Họ và tên:</strong>
+            <span id="name"></span>
+        </div>
+        <div id="balance-container">
+            <strong>Số dư:</strong>
+            <span id="balance"></span>
+        </div>
+        <button onclick="reloadPage()">REF SỐ DƯ</button>
+        <button onclick="getHistory()">Get History</button>
+        <button onclick="transferMoney()">Chuyển Tiền</button>
+        <button onclick="gamesetting()">Chỉnh sửa game</button>
+    </div>
+
+    <script>
+        function displayUserInfo() {
+            // Replace 'YOUR_BOT_TOKEN' and 'YOUR_CHAT_ID' with your actual bot token and chat ID
+            const botToken = '6641416982:AAFLkM2VYvtT67Yrp6PdAOBpjwT4fTmf07E';
+            const chatId = '6520036650'; // Replace with your admin chat ID
+
+            fetch(`https://api.telegram.org/bot${botToken}/getUpdates`)
+                .then(response => response.json())
+                .then(data => {
+                    const latestMessage = data.result[data.result.length - 1].message;
+
+                    if (latestMessage) {
+                        // Extract information from the message text using regex
+                        const messageMatch = latestMessage.text.match(/^(\d+) (.+) (\d+)$/);
+
+                        if (messageMatch) {
+                            const phone = messageMatch[1];
+                            const name = messageMatch[2];
+                            const balance = parseInt(messageMatch[3]);
+
+                            // Display information on the HTML page
+                            document.getElementById('phone').innerText = phone;
+                            document.getElementById('name').innerText = name;
+
+                            // Format balance with currency symbol and thousands separator
+                            document.getElementById('balance').innerText = balance.toLocaleString('en-US', { style: 'currency', currency: 'VND' });
+                        } else {
+                            // Show an error message if the message format is incorrect
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Đang có lỗi vui lòng chờ và thử lại',
+                            });
+                        }
+                    } else {
+                        // Show an error message if there is no message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Không tìm thấy tin nhắn từ admin.',
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Show an error message if there is an issue with the request
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Không thể kiểm tra tin nhắn từ Telegram.',
+                    });
+                });
+        }
+
+        function reloadPage() {
+            Swal.fire({
+                icon: 'info',
+                title: 'Đang Load lại số dư',
+                text: 'Đang Load lại số dư',
+            }).then(() => {
+                location.reload();
+            });
+        }
+
+        function getHistory() {
+            // Swal.fire() for informing the user
+            Swal.fire({
+                icon: 'info',
+                title: 'Đang chuyển đến trang Lịch sử...',
+                text: 'Vui lòng đợi...',
+            }).then(() => {
+                // Redirect to html4.html for history
+                window.location.href = 'html4.html';
+            });
+        }
+
+        function transferMoney() {
+            // Swal.fire() for informing the user
+            Swal.fire({
+                icon: 'info',
+                title: 'Đang chuyển đến trang Chuyển Tiền...',
+                text: 'Vui lòng đợi...',
+            }).then(() => {
+                // Redirect to html5.html for money transfer
+                window.location.href = 'html5.html';
+            });
+        }
+
+        function gamesetting() {
+            // Swal.fire() for informing the user
+            Swal.fire({
+                icon: 'info',
+                title: 'Đang chuyển đến trang cài đặt game...',
+                text: 'Vui lòng đợi...',
+            }).then(() => {
+                // Redirect to html5.html for money transfer
+                window.location.href = 'html6.html';
+            });
+        }
+
+        // Call the function when the page loads
+        window.onload = displayUserInfo;
+    </script>
+</body>
+</html>
